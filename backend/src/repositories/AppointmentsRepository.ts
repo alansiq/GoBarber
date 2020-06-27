@@ -1,38 +1,39 @@
-import Appointment from '../models/Appointment';
 import { isEqual, startOfHour, parseISO } from 'date-fns';
+import Appointment from '../models/Appointment';
+
+interface CreateAppointmentDTO {
+  provider: string;
+  date: string;
+}
 
 class AppointmentsRepository {
-    private appointments: Appointment[];
+  private appointments: Appointment[];
 
+  constructor() {
+    this.appointments = [];
+  }
 
+  public all(): Appointment[] {
+    return this.appointments;
+  }
 
-    constructor() {
-        this.appointments = [];
-    }
+  public create({ provider, date }: CreateAppointmentDTO): Appointment {
+    const parsedDate = startOfHour(parseISO(date));
+    const appointment = new Appointment({ provider, date: parsedDate });
 
-    public create(provider: string, date:Date): Appointment {
-        const appointment = new Appointment(provider, date);
+    this.appointments.push(appointment);
 
-        this.appointments.push(appointment);
+    return appointment;
+  }
 
-        return appointment;
-    }
+  public findByDate(date: string): Appointment | null {
+    const parsedDate = startOfHour(parseISO(date));
+    const findAppointment = this.appointments.find(appointment =>
+      isEqual(parsedDate, appointment.date),
+    );
 
-    public parseDate(date: string): Date {
-        
-        const parsedDate: Date = startOfHour(parseISO(date));
-
-        return parsedDate;
-
-    }
-
-    public findByDate(date: Date): Appointment | null {
-        const findAppointment = this.appointments.find(appointment => isEqual(date, appointment.date))
-
-        return findAppointment || null
-
-    }
-
+    return findAppointment || null;
+  }
 }
 
 export default AppointmentsRepository;
