@@ -24,7 +24,9 @@ function ensureAuthenticated(request: Request, response: Response, next: NextFun
 
     const { sub } = decoded as TokenPayload;
 
-    request.user = sub;
+    request.user = {
+      id: sub,
+    }
 
     return next();
 
