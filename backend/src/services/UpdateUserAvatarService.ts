@@ -1,6 +1,8 @@
 import User from '../models/User';
 import { getRepository } from 'typeorm';
 import uploadConfig from '../config/upload'
+import AppError from '../errors/AppError';
+
 import path from 'path';
 import fs from 'fs';
 
@@ -16,7 +18,11 @@ class UpdateUserAvatarService {
 
     // Validação: Encontrou um usuário?
     if (!user) {
-      throw new Error('You have to be authenticated to change avatar, dude!');
+      throw new AppError('You have to be authenticated to change avatar, dude!', 401);
+    }
+
+    if (avatarFilename === undefined) {
+      throw new AppError('Invalid file upload. Did you upload a new avatar?', 404);
     }
 
     // Validação: Já existe um avatar nesse usuário?

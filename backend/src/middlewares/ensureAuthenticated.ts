@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import authConfig from '../config/auth';
 import { verify } from 'jsonwebtoken';
+import AppError from '../errors/AppError';
+
 
 interface TokenPayload {
   iat: number,
@@ -13,7 +15,7 @@ function ensureAuthenticated(request: Request, response: Response, next: NextFun
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new Error('Missing session token / is the user authenticated?')
+    throw new AppError('Missing session token / is the user authenticated?', 403)
   }
 
   const [, token] = authHeader.split(' ');
@@ -31,7 +33,7 @@ function ensureAuthenticated(request: Request, response: Response, next: NextFun
     return next();
 
   } catch {
-    throw new Error('Wrong token, are you a hacker?')
+    throw new AppError('Wrong token, are you a hacker?', 403)
   }
 
 }

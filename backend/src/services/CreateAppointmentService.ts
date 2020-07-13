@@ -4,6 +4,9 @@ import { getCustomRepository } from 'typeorm';
 import Appointment from '../models/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 
+import AppError from '../errors/AppError';
+
+
 interface Request {
   provider_id: string;
   date: Date;
@@ -17,7 +20,7 @@ class CreateAppointmentService {
     const findAppointmentInSameDate = await appointmentsRepository.findByDate(appointmentDate);
 
     if (findAppointmentInSameDate) {
-      throw Error('An appointment for this exact time already exists');
+      throw new AppError('An appointment for this exact time already exists');
     }
 
     const appointment = appointmentsRepository.create({
