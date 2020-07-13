@@ -8,6 +8,9 @@ class User {
   @Column('varchar')
   name: string;
 
+  @Column()
+  avatar: string;
+
   @Column('varchar')
   email: string;
 
@@ -19,6 +22,8 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+
 }
 
 export default User;
