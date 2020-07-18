@@ -21,10 +21,6 @@ class UpdateUserAvatarService {
       throw new AppError('You have to be authenticated to change avatar, dude!', 401);
     }
 
-    if (avatarFilename === undefined) {
-      throw new AppError('Invalid file upload. Did you upload a new avatar?', 404);
-    }
-
     // Validação: Já existe um avatar nesse usuário?
     if (user.avatar) {
       // Cria um caminho com o nome do arquivo "avatar" e o diretório onde armazenamos as imagens

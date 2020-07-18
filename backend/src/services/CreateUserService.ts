@@ -1,5 +1,4 @@
 import User from '../models/User';
-import UsersRepository from '../repositories/UsersRepository';
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import AppError from '../errors/AppError';
